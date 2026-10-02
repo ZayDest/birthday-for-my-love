@@ -1,6 +1,7 @@
 import { SURPRISES, ENDINGS, initialState, revealSurprise, canReadLetter, chooseEnding } from './story.mjs';
 
 let state = initialState();
+let confettiTimer;
 
 const dialog = document.querySelector('#surpriseDialog');
 const cards = [...document.querySelectorAll('[data-surprise]')];
@@ -23,8 +24,10 @@ function updateProgress() {
 
   cards.forEach((card) => {
     const opened = state.opened.includes(card.dataset.surprise);
+    const surprise = SURPRISES.find((item) => item.id === card.dataset.surprise);
     card.classList.toggle('is-opened', opened);
     card.querySelector('.card-status').textContent = opened ? 'Read again' : 'Open me';
+    card.setAttribute('aria-label', opened ? `Read again: ${surprise.title}` : `Open surprise ${Number(surprise.number)}: ${surprise.title}`);
   });
 
   if (canReadLetter(state)) {
@@ -66,8 +69,9 @@ openLetterButton.addEventListener('click', () => {
 
 function celebrate() {
   const container = document.querySelector('#confetti');
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  window.clearTimeout(confettiTimer);
   container.replaceChildren();
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const colors = ['#c8849b', '#e4bd70', '#e9a8b8', '#fff0dc', '#9e6379'];
 
   for (let index = 0; index < 36; index += 1) {
@@ -80,7 +84,7 @@ function celebrate() {
     container.append(piece);
   }
 
-  window.setTimeout(() => container.replaceChildren(), 4500);
+  confettiTimer = window.setTimeout(() => container.replaceChildren(), 4500);
 }
 
 document.querySelectorAll('[data-ending]').forEach((button) => {
@@ -94,8 +98,9 @@ document.querySelectorAll('[data-ending]').forEach((button) => {
       choice.classList.toggle('is-selected', selected);
       choice.setAttribute('aria-pressed', String(selected));
     });
-    endingMessage.textContent = ending.message;
     endingResult.hidden = false;
+    endingMessage.textContent = ending.message;
+    document.querySelector('#endingAnnouncement').textContent = ending.message;
     celebrate();
   });
 });

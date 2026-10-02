@@ -94,11 +94,12 @@
             <h2 id="endingTitle">Pick our next little moment</h2>
             <p>There are no wrong answers. Choose the one that feels like us today.</p>
             <div class="ending-choices" role="group" aria-label="Choose our next little moment">
-              <button type="button" class="ending-choice" data-ending="stars"><span aria-hidden="true">✦</span> Under the stars</button>
-              <button type="button" class="ending-choice" data-ending="dance"><span aria-hidden="true">♫</span> A slow dance</button>
-              <button type="button" class="ending-choice" data-ending="cozy"><span aria-hidden="true">☾</span> A cozy night in</button>
+              <button type="button" class="ending-choice" data-ending="stars" aria-pressed="false"><span aria-hidden="true">✦</span> Under the stars</button>
+              <button type="button" class="ending-choice" data-ending="dance" aria-pressed="false"><span aria-hidden="true">♫</span> A slow dance</button>
+              <button type="button" class="ending-choice" data-ending="cozy" aria-pressed="false"><span aria-hidden="true">☾</span> A cozy night in</button>
             </div>
-            <div class="ending-result" id="endingResult" aria-live="polite" hidden>
+            <p class="sr-only" id="endingAnnouncement" aria-live="polite" aria-atomic="true"></p>
+            <div class="ending-result" id="endingResult" hidden>
               <span class="result-heart" aria-hidden="true">♡</span>
               <p id="endingMessage"></p>
               <small>Whichever you choose, the best part is being with you.</small>
